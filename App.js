@@ -8,12 +8,20 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import { useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 export default function App() {
-  const num = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-
+  const [myWriteOn, setMyWriteOn] = useState(true);
+  const chooseMyWriting = () => {
+    setMyWriteOn(true);
+  };
+  const chooseMyScrap = () => {
+    setMyWriteOn(false);
+  };
+  const myWritings = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  const myScraps = [1, 2, 3, 4, 5];
   return (
     <>
       <View style={styles.container}>
@@ -40,30 +48,76 @@ export default function App() {
         </View>
         <View style={styles.album}>
           <View style={styles.albumSelect}>
-            <TouchableOpacity>
-              <Text style={styles.myWriting}>내 게시글</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.myScrap}>스크랩한 글</Text>
-            </TouchableOpacity>
+            {myWriteOn ? (
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    chooseMyWriting();
+                  }}
+                >
+                  <View style={styles.myWritingChange}>
+                    <Text style={styles.myWriting}>내 게시글</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    chooseMyScrap();
+                  }}
+                >
+                  <Text style={styles.myScrap}>스크랩한 글</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    chooseMyWriting();
+                  }}
+                >
+                  <View>
+                    <Text style={styles.myWriting}>내 게시글</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    chooseMyScrap();
+                  }}
+                >
+                  <View style={styles.myScrapChange}>
+                    <Text style={styles.myScrap}>스크랩한 글</Text>
+                  </View>
+                </TouchableOpacity>
+              </>
+            )}
           </View>
-          <ScrollView>
-            <View style={styles.grid}>
-              {num.map((nums, index) => (
-                <View key={nums} style={styles.Writings}></View>
-              ))}
-            </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {myWriteOn ? (
+              <View style={styles.grid}>
+                {myWritings.map((nums, index) => (
+                  <View key={nums} style={styles.Writings}></View>
+                ))}
+              </View>
+            ) : (
+              <View style={styles.grid}>
+                {myScraps.map((nums, index) => (
+                  <View key={nums} style={styles.Writings}></View>
+                ))}
+              </View>
+            )}
           </ScrollView>
         </View>
         <View>
           <TouchableOpacity>
-            <View style={styles.writeBtnRnd}>
-              <Feather
-                style={styles.writeBtn}
-                name="pen-tool"
-                size={80}
-                color="black"
-              />
+            <View style={styles.writeBtnRndRnd}>
+              <View style={styles.writeBtnRnd}>
+                <Feather
+                  style={styles.writeBtn}
+                  name="pen-tool"
+                  size={80}
+                  color="white"
+                />
+              </View>
             </View>
           </TouchableOpacity>
         </View>
@@ -78,15 +132,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   profile: {
-    borderTopWidth: 1,
-
     borderTopEndRadius: 20,
     flexDirection: 'row',
     flex: 3,
-    backgroundColor: '#052659',
+    backgroundColor: '#2B6653',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: -10 }, // change this for more shadow
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   BIO: {
-    backgroundColor: '#021430',
+    backgroundColor: 'black',
     flexDirection: 'column',
     flex: 5,
   },
@@ -98,7 +154,7 @@ const styles = StyleSheet.create({
   album: {
     flex: 6,
     flexDirection: 'column',
-    backgroundColor: '#021430',
+    backgroundColor: '#2B6653',
   },
   profileArtPic: {
     width: '100%',
@@ -128,22 +184,43 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   albumSelect: {
-    backgroundColor: '#052659',
+    backgroundColor: '#2B6653',
     paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderBottomWidth: 1,
+
     borderColor: 'black',
+
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 10 }, // change this for more shadow
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
   },
   myWriting: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'white',
     fontWeight: 'bold',
   },
-  myScrap: {
-    fontSize: 30,
+  myWritingChange: {
+    fontSize: 25,
     color: 'white',
     fontWeight: 'bold',
+    borderBottomColor: 'white',
+    borderBottomWidth: 3,
+    paddingBottom: 3,
+  },
+  myScrap: {
+    fontSize: 25,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  myScrapChange: {
+    fontSize: 25,
+    color: 'white',
+    fontWeight: 'bold',
+    borderBottomColor: 'white',
+    borderBottomWidth: 3,
+    paddingBottom: 3,
   },
   Writings: {
     width: SCREEN_WIDTH / 3,
@@ -157,14 +234,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
-  writeBtnRnd: {
-    position: 'absolute',
-    backgroundColor: 'yellow',
-  },
+
   writeBtn: {
     position: 'absolute',
     bottom: 20,
     left: 260,
-    color: '#2B6653',
+    color: '#FF6C0F',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
   },
 });
