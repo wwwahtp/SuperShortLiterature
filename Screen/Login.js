@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   StyleSheet,
@@ -9,17 +9,53 @@ import {
   TextInput,
 } from 'react-native';
 
-export default function App() {
+export default function Login({ navigation }) {
+  const [text, setText] = useState('');
+  const [inputId, setInputId] = useState('');
+  const [inputPw, setInputPw] = useState('');
+
+  const onChangeText = (e) => {
+    setText(e);
+  };
+  const onSubmitEditingId = (a) => {
+    setInputId(text);
+    console.log(inputId);
+    setText('');
+  };
+  const onSubmitEditingPw = (a) => {
+    setInputPw(text);
+    console.log(inputPw);
+    setText('');
+  };
+
   return (
     <View style={styles.screen}>
       <View style={styles.main}></View>
       <View style={styles.bottom}>
         <View style={styles.cover}>
-          <TextInput placeholder="ID" style={styles.idAndPw}></TextInput>
-          <TextInput placeholder="PW" style={styles.idAndPw}></TextInput>
+          <TextInput
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditingId}
+            placeholder="ID"
+            style={styles.idAndPw}
+          ></TextInput>
+          <TextInput
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditingPw}
+            placeholder="PW"
+            style={styles.idAndPw}
+          ></TextInput>
 
           <TouchableOpacity style={styles.loginBtn}>
-            <Text style={styles.loginTxt}>로그인</Text>
+            <Text
+              onPress={() => {
+                console.log(inputId);
+                console.log(inputPw);
+              }}
+              style={styles.loginTxt}
+            >
+              로그인
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.RegisterBtn}>
             <Text style={styles.Register}>회원가입</Text>
@@ -41,7 +77,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 2,
-    backgroundColor: '#093D8C ',
+    backgroundColor: '#093D8C',
     flexDirection: 'column',
     alignItems: 'center',
   },

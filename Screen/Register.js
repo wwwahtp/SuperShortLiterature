@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
+
 import {
   StyleSheet,
   Text,
@@ -10,14 +11,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 
 const Finish = () => {
   alert('회원가입이 완료되었습니다!');
 };
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-export default function App() {
+export default function Register({ navigation }) {
   const [id, setId] = '';
   const [pw, setPw] = '';
   const [repw, setRepw] = '';
@@ -30,7 +30,15 @@ export default function App() {
             <View style={styles.titleView}>
               <Text style={styles.title}>회원가입</Text>
             </View>
+            <View>
+              <Text style={styles.nickTxt}>
+                프로필에 사용될 닉네임을 입력해주세요.
+              </Text>
+              <TextInput placeholder="Nickname" style={styles.nick}></TextInput>
+            </View>
+            <Text style={styles.IdText}>ID를 입력해주세요.</Text>
             <TextInput placeholder="ID" style={styles.id}></TextInput>
+            <Text style={styles.PwText}>비밀번호를 입력해주세요.</Text>
             <View style={styles.pws}>
               <TextInput placeholder="PW" style={styles.pw}></TextInput>
               <TextInput
@@ -38,6 +46,7 @@ export default function App() {
                 style={styles.repw}
               ></TextInput>
             </View>
+
             <View style={styles.horizonLine}></View>
             <Text style={styles.profilePicMsg}>
               프로필 사진을 업로드 해주세요.
@@ -76,9 +85,49 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    margin: 10,
+    borderRadius: 30,
   },
   main: {
     flexDirection: 'column',
+  },
+  nickTxt: {
+    marginTop: 50,
+    marginLeft: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  nick: {
+    fontSize: 20,
+
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 2,
+    paddingHorizontal: 10,
+    marginHorizontal: 20,
+    paddingVertical: 20,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+  IdText: {
+    marginTop: 50,
+    marginLeft: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  PwText: {
+    marginLeft: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   titleView: {
     borderBottomWidth: 1,
@@ -94,7 +143,7 @@ const styles = StyleSheet.create({
   },
   id: {
     fontSize: 20,
-    marginTop: 80,
+
     backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 2,
